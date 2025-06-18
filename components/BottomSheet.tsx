@@ -15,7 +15,7 @@ export default function BottomSheet({ children, onClose }) {
   const translateY = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
   const [contentHeight, setContentHeight] = useState(SCREEN_HEIGHT * 0.5);
   const dragOffsetY = useRef(0);
-  const startPosition = useRef(SCREEN_HEIGHT * 0.8);
+  const startPosition = useRef(0);
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, gestureState) => gestureState.dy > 10,
@@ -24,8 +24,9 @@ export default function BottomSheet({ children, onClose }) {
     },
     onPanResponderMove: (_, gestureState) => {
       dragOffsetY.current = gestureState.dy;
+      // Keep the sheet from sliding above its starting position
       translateY.setValue(
-        Math.max(SCREEN_HEIGHT * 0.3, startPosition.current + gestureState.dy)
+        Math.max(0, startPosition.current + gestureState.dy)
       );
     },
     onPanResponderRelease: (_, gestureState) => {
@@ -38,10 +39,10 @@ export default function BottomSheet({ children, onClose }) {
   });
 
   const openSheet = () => {
-    const targetY = Math.min(contentHeight, SCREEN_HEIGHT * 0.8);
-    startPosition.current = targetY;
+    // Slide the sheet up into view by resetting the translation
+    startPosition.current = 0;
     Animated.timing(translateY, {
-      toValue: targetY,
+      toValue: 0,
       duration: 300,
       useNativeDriver: true,
     }).start();
