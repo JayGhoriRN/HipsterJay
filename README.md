@@ -28,6 +28,7 @@ You can start developing by editing the files inside the **app** directory. This
 ## Get a fresh project
 
 When you're ready, run:
+![hipster](https://github.com/user-attachments/assets/e73f1341-90ae-493b-8d6b-3a411c2329b0)
 
 ```bash
 npm run reset-project
